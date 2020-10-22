@@ -1,11 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 
 namespace UnityEngine
 {
+    public enum ETileType
+    {
+        Ground,
+        LeftWall,
+        RightWall,
+        Corner,
+    }
+
     /// <summary>
     /// Generic visual tile for creating different tilesets like terrain, pipeline, random or animated tiles.
     /// This is templated to accept a Neighbor Rule Class for Custom Rules.
@@ -93,6 +101,10 @@ namespace UnityEngine
             /// The randomized transform output for this Rule.
             /// </summary>
             public Transform m_RandomTransform;
+            /// <summary>
+            /// type of this tile
+            /// </summary>
+            public ETileType m_TileType;
 
             /// <summary>
             /// The enumeration for matching Neighbors when matching Rule Tiles
@@ -654,8 +666,10 @@ namespace UnityEngine
 
             switch (neighbor)
             {
-                case TilingRule.Neighbor.This: return other == this;
-                case TilingRule.Neighbor.NotThis: return other != this;
+                case TilingRule.Neighbor.This:
+                    return other == this;
+                case TilingRule.Neighbor.NotThis:
+                    return other != this;
             }
             return true;
         }

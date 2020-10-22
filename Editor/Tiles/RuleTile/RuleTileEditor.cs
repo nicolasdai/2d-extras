@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -335,8 +335,8 @@ namespace UnityEditor
             EditorGUI.LabelField(toggleLabelRect, "Extend Neighbor", new GUIStyle()
             {
                 alignment = TextAnchor.MiddleRight,
-                fontStyle = FontStyle.Bold,
-                fontSize = 10,
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 10,
             });
             if (EditorGUI.EndChangeCheck())
             {
@@ -360,7 +360,7 @@ namespace UnityEditor
 
             tile.m_DefaultSprite = EditorGUILayout.ObjectField("Default Sprite", tile.m_DefaultSprite, typeof(Sprite), false) as Sprite;
             tile.m_DefaultGameObject = EditorGUILayout.ObjectField("Default Game Object", tile.m_DefaultGameObject, typeof(GameObject), false) as GameObject;
-            tile.m_DefaultColliderType = (Tile.ColliderType)EditorGUILayout.EnumPopup("Default Collider", tile.m_DefaultColliderType);
+            tile.m_DefaultColliderType = (Tile.ColliderType) EditorGUILayout.EnumPopup("Default Collider", tile.m_DefaultColliderType);
 
             DrawCustomFields(false);
 
@@ -469,7 +469,7 @@ namespace UnityEditor
             var allConsts = tile.m_NeighborType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy);
             foreach (var c in allConsts)
             {
-                if ((int)c.GetValue(null) == neighbor)
+                if ((int) c.GetValue(null) == neighbor)
                 {
                     GUI.Label(rect, new GUIContent("", c.Name));
                     break;
@@ -517,7 +517,7 @@ namespace UnityEditor
             if (Event.current.type == EventType.MouseDown && ContainsMousePosition(rect))
             {
                 var allConsts = tile.m_NeighborType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                var neighborConsts = allConsts.Select(c => (int)c.GetValue(null)).ToList();
+                var neighborConsts = allConsts.Select(c => (int) c.GetValue(null)).ToList();
                 neighborConsts.Sort();
 
                 if (neighbors.ContainsKey(position))
@@ -526,7 +526,7 @@ namespace UnityEditor
                     int newIndex = oldIndex + GetMouseChange();
                     if (newIndex >= 0 && newIndex < neighborConsts.Count)
                     {
-                        newIndex = (int)Mathf.Repeat(newIndex, neighborConsts.Count);
+                        newIndex = (int) Mathf.Repeat(newIndex, neighborConsts.Count);
                         neighbors[position] = neighborConsts[newIndex];
                     }
                     else
@@ -554,7 +554,7 @@ namespace UnityEditor
         {
             if (Event.current.type == EventType.MouseDown && ContainsMousePosition(rect))
             {
-                tilingRule.m_RuleTransform = (RuleTile.TilingRule.Transform)(int)Mathf.Repeat((int)tilingRule.m_RuleTransform + GetMouseChange(), Enum.GetValues(typeof(RuleTile.TilingRule.Transform)).Length);
+                tilingRule.m_RuleTransform = (RuleTile.TilingRule.Transform) (int) Mathf.Repeat((int) tilingRule.m_RuleTransform + GetMouseChange(), Enum.GetValues(typeof(RuleTile.TilingRule.Transform)).Length);
                 GUI.changed = true;
                 Event.current.Use();
             }
@@ -626,7 +626,7 @@ namespace UnityEditor
         /// <param name="rect">GUI Rect to draw icon at</param>
         public void RuleMatrixIconOnGUI(RuleTile.TilingRule tilingRule, Dictionary<Vector3Int, int> neighbors, Vector3Int position, Rect rect)
         {
-            using (var check = new EditorGUI.ChangeCheckScope())
+            using(var check = new EditorGUI.ChangeCheckScope())
             {
                 if (position.x != 0 || position.y != 0)
                 {
@@ -668,13 +668,16 @@ namespace UnityEditor
         {
             float y = rect.yMin;
             GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Game Object");
-            tilingRule.m_GameObject = (GameObject)EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), "", tilingRule.m_GameObject, typeof(GameObject), false);
+            tilingRule.m_GameObject = (GameObject) EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), "", tilingRule.m_GameObject, typeof(GameObject), false);
             y += k_SingleLineHeight;
             GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Collider");
-            tilingRule.m_ColliderType = (Tile.ColliderType)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_ColliderType);
+            tilingRule.m_ColliderType = (Tile.ColliderType) EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_ColliderType);
+            y += k_SingleLineHeight;
+            GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "TileType");
+            tilingRule.m_TileType = (ETileType) EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_TileType);
             y += k_SingleLineHeight;
             GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Output");
-            tilingRule.m_Output = (RuleTile.TilingRule.OutputSprite)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_Output);
+            tilingRule.m_Output = (RuleTile.TilingRule.OutputSprite) EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_Output);
             y += k_SingleLineHeight;
 
             if (tilingRule.m_Output == RuleTile.TilingRule.OutputSprite.Animation)
@@ -690,7 +693,7 @@ namespace UnityEditor
                 y += k_SingleLineHeight;
 
                 GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), "Shuffle");
-                tilingRule.m_RandomTransform = (RuleTile.TilingRule.Transform)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_RandomTransform);
+                tilingRule.m_RandomTransform = (RuleTile.TilingRule.Transform) EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_RandomTransform);
                 y += k_SingleLineHeight;
             }
 
@@ -736,7 +739,7 @@ namespace UnityEditor
             m_PreviewUtility.BeginPreview(rect, background);
             m_PreviewUtility.camera.orthographicSize = 2;
             if (rect.height > rect.width)
-                m_PreviewUtility.camera.orthographicSize *= (float)rect.height / rect.width;
+                m_PreviewUtility.camera.orthographicSize *= (float) rect.height / rect.width;
             m_PreviewUtility.camera.Render();
             m_PreviewUtility.EndAndDrawPreview(rect);
         }
