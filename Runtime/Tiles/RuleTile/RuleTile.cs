@@ -366,6 +366,34 @@ namespace UnityEngine
             return true;
         }
 
+        public TilingRuleOutput GetMatchingRule(Vector3Int pos, Tilemap tilemap)
+        {
+            foreach (TilingRule rule in m_TilingRules)
+            {
+                if (RuleMatches(rule, pos, tilemap, 0))
+                {
+                    return rule;
+                }
+            }
+
+            return null;
+        }
+
+        public bool RuleMatches(TilingRule rule, Vector3Int position, Tilemap tilemap, int angle)
+        {
+            for (int i = 0; i < rule.m_Neighbors.Count && i < rule.m_NeighborPositions.Count; i++)
+            {
+                int neighbor = rule.m_Neighbors[i];
+                Vector3Int positionOffset = GetRotatedPosition(rule.m_NeighborPositions[i], angle);
+                TileBase other = tilemap.GetTile(GetOffsetPosition(position, positionOffset));
+                if (!RuleMatch(neighbor, other))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// Retrieves any tile rendering data from the scripted tile.
         /// </summary>
